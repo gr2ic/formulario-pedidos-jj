@@ -9,7 +9,8 @@
     body {
       font-family: Arial, sans-serif;
       background: #f6f6f6;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
     }
     form {
       background: white;
@@ -71,7 +72,7 @@
       right: 10px;
     }
     img {
-      max-width: 120px;
+      max-width: 150px;
       display: block;
       margin: 0 auto 20px auto;
     }
@@ -167,7 +168,6 @@
       const div = document.createElement("div");
       div.className = "produto-item";
       const index = document.querySelectorAll(".produto-item").length;
-      const podeExcluir = index > 0;
 
       div.innerHTML = `
         <label>Produto:</label>
@@ -178,7 +178,7 @@
         <input type="number" name="quantidade" required>
         <label>Preço Unitário:</label>
         <input type="number" name="precoUnitario" required>
-        ${podeExcluir ? '<button type="button" class="remover" onclick="this.parentElement.remove()">🗑️ Remover</button>' : ''}
+        ${index > 0 ? '<button type="button" class="remover" onclick="this.parentElement.remove()">🗑️ Remover</button>' : ''}
       `;
       document.getElementById("produtos").appendChild(div);
     }
@@ -191,6 +191,8 @@
 
       try {
         const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+        if (!resposta.ok) throw new Error("Erro na consulta do CNPJ");
+
         const dados = await resposta.json();
 
         document.querySelector("input[name='razaoSocial']").value = dados.razao_social || "";
@@ -205,8 +207,8 @@
 
     document.getElementById("pedidoForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-
       const form = e.target;
+
       const dados = {
         dataPedido: form.dataPedido.value,
         vendedor: form.vendedor.value,
@@ -238,19 +240,19 @@
 
         const texto = await resposta.text();
         console.log("Resposta do servidor:", texto);
-
         const resultado = JSON.parse(texto);
+
         if (resultado.success) {
           alert("Pedido enviado com sucesso!");
           form.reset();
           document.getElementById("produtos").innerHTML = "";
           addProduto();
         } else {
-          alert("Erro ao enviar pedido.");
+          alert("Erro ao enviar pedido: " + (resultado.erro || "Erro desconhecido."));
         }
       } catch (erro) {
         console.error("Erro na submissão:", erro);
-        alert("Erro ao processar o envio do pedido.");
+        alert("Erro técnico ao enviar pedido: " + erro.message);
       }
     });
   </script>
