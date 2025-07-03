@@ -172,6 +172,26 @@
 
     addProduto();
 
+    document.querySelector("input[name='cnpj']").addEventListener("blur", async function () {
+      const cnpj = this.value.replace(/\D/g, "");
+      if (cnpj.length !== 14) return;
+
+      try {
+        const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+        if (!resposta.ok) throw new Error("Erro na consulta do CNPJ");
+
+        const dados = await resposta.json();
+
+        document.querySelector("input[name='razaoSocial']").value = dados.razao_social || "";
+        document.querySelector("input[name='nomeFantasia']").value = dados.nome_fantasia || "";
+        document.querySelector("input[name='endereco']").value = `${dados.descricao_tipo_de_logradouro || ""} ${dados.logradouro || ""}, ${dados.numero || ""}`.trim();
+        document.querySelector("input[name='municipio']").value = dados.municipio || "";
+        document.querySelector("input[name='uf']").value = dados.uf || "";
+      } catch (erro) {
+        alert("Não foi possível consultar o CNPJ automaticamente.");
+      }
+    });
+
     document.getElementById("pedidoForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
