@@ -5,88 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastro de Pedido</title>
   <style>
-    * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
-      background: #f6f6f6;
-      margin: 0;
+      background: #f2f2f2;
       padding: 0;
+      margin: 0;
     }
     form {
       background: white;
+      max-width: 600px;
+      margin: 30px auto;
       padding: 20px;
-      margin: 10px;
       border-radius: 10px;
-      max-width: 100%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     label {
-      display: block;
       margin-top: 10px;
-      font-size: 0.95em;
+      display: block;
+      font-weight: bold;
     }
     input, select, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      font-size: 1em;
+      margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 1em;
     }
     .produto-item {
-      margin-top: 15px;
-      padding: 10px;
       border: 1px solid #ccc;
+      padding: 15px;
       border-radius: 5px;
+      margin-top: 10px;
       background: #f9f9f9;
       position: relative;
     }
-    .add-produto {
-      margin-top: 15px;
-      background: #444;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 5px;
-      width: 100%;
-      font-size: 1em;
-    }
-    button[type="submit"] {
-      margin-top: 20px;
-      background: black;
-      color: white;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      font-size: 1.1em;
-      border-radius: 5px;
-    }
     .remover {
+      position: absolute;
+      right: 10px;
+      top: 10px;
       background: red;
       color: white;
       border: none;
-      padding: 5px 10px;
       border-radius: 5px;
+      padding: 5px 10px;
       cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
     }
-    img {
-      max-width: 150px;
+    .add-produto, button[type="submit"] {
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px;
+      width: 100%;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .logo {
       display: block;
       margin: 0 auto 20px auto;
-    }
-    @media (min-width: 600px) {
-      form {
-        max-width: 600px;
-        margin: 20px auto;
-      }
+      max-width: 150px;
     }
   </style>
 </head>
 <body>
   <form id="pedidoForm">
-    <img src="logo-jj.jpg" alt="Logo J&J">
+    <img src="logo-jj.jpg" alt="Logo" class="logo">
     <h2 style="text-align:center">Cadastro de Pedido</h2>
 
     <label>Data do Pedido:</label>
@@ -167,18 +152,15 @@
     function addProduto() {
       const div = document.createElement("div");
       div.className = "produto-item";
-      const index = document.querySelectorAll(".produto-item").length;
 
       div.innerHTML = `
         <label>Produto:</label>
-        <select name="produto">
-          ${produtos.map(p => `<option value="${p}">${p}</option>`).join('')}
-        </select>
+        <select name="produto">${produtos.map(p => `<option value="${p}">${p}</option>`).join('')}</select>
         <label>Quantidade:</label>
         <input type="number" name="quantidade" required>
         <label>Preço Unitário:</label>
         <input type="number" name="precoUnitario" required>
-        ${index > 0 ? '<button type="button" class="remover" onclick="this.parentElement.remove()">🗑️ Remover</button>' : ''}
+        <button type="button" class="remover" onclick="this.parentElement.remove()">🗑️ Remover</button>
       `;
       document.getElementById("produtos").appendChild(div);
     }
@@ -194,7 +176,6 @@
         if (!resposta.ok) throw new Error("Erro na consulta do CNPJ");
 
         const dados = await resposta.json();
-
         document.querySelector("input[name='razaoSocial']").value = dados.razao_social || "";
         document.querySelector("input[name='nomeFantasia']").value = dados.nome_fantasia || "";
         document.querySelector("input[name='endereco']").value = `${dados.descricao_tipo_de_logradouro || ""} ${dados.logradouro || ""}, ${dados.numero || ""}`.trim();
@@ -207,54 +188,10 @@
 
     document.getElementById("pedidoForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const form = e.target;
 
+      const form = e.target;
       const dados = {
         dataPedido: form.dataPedido.value,
         vendedor: form.vendedor.value,
         cnpj: form.cnpj.value,
-        razaoSocial: form.razaoSocial.value,
-        nomeFantasia: form.nomeFantasia.value,
-        endereco: form.endereco.value,
-        municipio: form.municipio.value,
-        uf: form.uf.value,
-        condicaoPagamento: form.condicaoPagamento.value,
-        formatoEntrega: form.formatoEntrega.value,
-        observacoes: form.observacoes.value,
-        produtos: []
-      };
-
-      document.querySelectorAll(".produto-item").forEach(div => {
-        dados.produtos.push({
-          nome: div.querySelector("select[name='produto']").value,
-          quantidade: div.querySelector("input[name='quantidade']").value,
-          precoUnitario: div.querySelector("input[name='precoUnitario']").value
-        });
-      });
-
-      try {
-        const resposta = await fetch("https://script.google.com/macros/s/AKfycbypzl_1HE0CNhhnZ9Velr1fOsvwXBdB4_hTR_w2WLgCH68mJdgTdfHzuHluB1zzAQm6RQ/exec", {
-          method: "POST",
-          body: JSON.stringify(dados)
-        });
-
-        const texto = await resposta.text();
-        console.log("Resposta do servidor:", texto);
-        const resultado = JSON.parse(texto);
-
-        if (resultado.success) {
-          alert("Pedido enviado com sucesso!");
-          form.reset();
-          document.getElementById("produtos").innerHTML = "";
-          addProduto();
-        } else {
-          alert("Erro ao enviar pedido: " + (resultado.erro || "Erro desconhecido."));
-        }
-      } catch (erro) {
-        console.error("Erro na submissão:", erro);
-        alert("Erro técnico ao enviar pedido: " + erro.message);
-      }
-    });
-  </script>
-</body>
-</html>
+        razaoSocial: form.razaoSocial.
