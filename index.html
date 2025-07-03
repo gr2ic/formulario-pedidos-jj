@@ -2,28 +2,24 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Pedido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Pedido - J&J</title>
   <style>
     * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #f6f6f6;
       margin: 0;
-      padding: 0;
+      padding: 10px;
     }
     form {
       background: white;
       padding: 20px;
-      margin: 10px;
       border-radius: 10px;
-      max-width: 100%;
+      max-width: 600px;
+      margin: auto;
     }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 0.95em;
-    }
+    label { display: block; margin-top: 10px; font-size: 0.95em; }
     input, select, textarea {
       width: 100%;
       padding: 10px;
@@ -72,21 +68,15 @@
       right: 10px;
     }
     img {
-      max-width: 140px;
+      max-width: 120px;
       display: block;
       margin: 0 auto 20px auto;
-    }
-    @media (min-width: 600px) {
-      form {
-        max-width: 600px;
-        margin: 20px auto;
-      }
     }
   </style>
 </head>
 <body>
   <form id="pedidoForm">
-    <img src="https://drive.google.com/uc?export=view&id=1e3Od-8Q_GpD7UudMzmWmPzUrKQFz5lz9" alt="Logo J&J">
+    <img src="logo_jj.png" alt="Logo J&J" />
     <h2 style="text-align:center">Cadastro de Pedido</h2>
 
     <label>Data do Pedido:</label>
@@ -149,7 +139,7 @@
   </form>
 
   <script>
-    const produtos = [
+    const produtosLista = [
       "1 - Realengo TP 1 6x5 Parboilizado",
       "3 - Realengo TP 1 30x1 Parboilizado",
       "642 - Realengo Polido 6x5",
@@ -173,9 +163,7 @@
 
       div.innerHTML = `
         <label>Produto:</label>
-        <select name="produto">
-          ${produtos.map(p => `<option value="${p}">${p}</option>`).join('')}
-        </select>
+        <select name="produto">${produtosLista.map(p => `<option value="${p}">${p}</option>`).join('')}</select>
         <label>Quantidade:</label>
         <input type="number" name="quantidade" required>
         <label>Preço Unitário:</label>
@@ -193,8 +181,6 @@
 
       try {
         const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-        if (!resposta.ok) throw new Error("Erro na consulta do CNPJ");
-
         const dados = await resposta.json();
 
         document.querySelector("input[name='razaoSocial']").value = dados.razao_social || "";
@@ -203,7 +189,7 @@
         document.querySelector("input[name='municipio']").value = dados.municipio || "";
         document.querySelector("input[name='uf']").value = dados.uf || "";
       } catch (erro) {
-        alert("Não foi possível consultar o CNPJ automaticamente.");
+        alert("Erro ao consultar CNPJ.");
       }
     });
 
@@ -234,21 +220,26 @@
         });
       });
 
-      const resposta = await fetch("https://script.google.com/macros/s/AKfycbypzl_1HE0CNhhnZ9Velr1fOsvwXBdB4_hTR_w2WLgCH68mJdgTdfHzuHluB1zzAQm6RQ/exec", {
-        method: "POST",
-        body: JSON.stringify(dados),
-        headers: { "Content-Type": "application/json" }
-      });
+      try {
+        const resposta = await fetch("https://script.google.com/macros/s/AKfycbypzl_1HE0CNhhnZ9Velr1fOsvwXBdB4_hTR_w2WLgCH68mJdgTdfHzuHluB1zzAQm6RQ/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
 
-      const resultado = await resposta.json();
-      if (resultado.success) {
-        alert("Pedido enviado com sucesso!");
-        form.reset();
-        document.getElementById("produtos").innerHTML = "";
-        addProduto();
-      } else {
+        const resultado = await resposta.json();
+        if (resultado.success) {
+          alert("Pedido enviado com sucesso!");
+          form.reset();
+          document.getElementById("produtos").innerHTML = "";
+          addProduto();
+        } else {
+          alert("Erro ao enviar pedido.");
+          console.log(resultado);
+        }
+      } catch (erro) {
         alert("Erro ao enviar pedido.");
-        console.log(resultado.erro || resultado);
+        console.error(erro);
       }
     });
   </script>
