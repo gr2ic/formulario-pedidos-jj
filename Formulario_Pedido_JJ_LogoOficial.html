@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Pedido - J&J Representações LTDA</title>
+  <style>
+body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
+.container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
+h2 { color: #222; text-align: center; }
+label { display: block; margin-top: 10px; font-weight: bold; }
+input, select, textarea { width: 100%; max-width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box; }
+.item { margin-bottom: 15px; border: 1px solid #ccc; padding: 10px; background: #fafafa; }
+.button { padding: 10px 20px; margin-top: 15px; background: #000; color: #fff; border: none; cursor: pointer; }
+#logo { width: 180px; display: block; margin: 0 auto 20px auto; }
+</style>
+  <script>
+    async function buscarCNPJ() {
+      const cnpj = document.getElementById("cnpj").value.replace(/\D/g, "");
+      const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+      const data = await res.json();
+      document.getElementById("razao").value = data.razao_social || "";
+      document.getElementById("fantasia").value = data.nome_fantasia || "";
+      document.getElementById("endereco").value = (data.logradouro || "") + ", " + (data.numero || "") + " - " + (data.bairro || "");
+      document.getElementById("municipio").value = data.municipio || "";
+      document.getElementById("uf").value = data.uf || "";
+    }
+
+    function adicionarItem() {
+      const container = document.getElementById("itens");
+      const itemHTML = `
+        <div class="item">
+          <label>Produto:
+            <select name="produto[]">
+              <option value="1 - Realengo TP 1 6x5 Parboilizado">1 - Realengo TP 1 6x5 Parboilizado</option>
+              <option value="3 - Realengo TP 1 30x1 Parboilizado">3 - Realengo TP 1 30x1 Parboilizado</option>
+              <option value="642 - Realengo Polido 6x5">642 - Realengo Polido 6x5</option>
+              <option value="643 - Realengo Polido 30x1">643 - Realengo Polido 30x1</option>
+              <option value="1110 - Arroz P/ Cães 6x5">1110 - Arroz P/ Cães 6x5</option>
+              <option value="8291 - Arroz Parboilizado 25Kg TP 1">8291 - Arroz Parboilizado 25Kg TP 1</option>
+              <option value="8295 - Arroz Polido TP 1 SC 25Kg">8295 - Arroz Polido TP 1 SC 25Kg</option>
+              <option value="1128 - Realengo TP 1 SC 50Kg Parboilizado">1128 - Realengo TP 1 SC 50Kg Parboilizado</option>
+              <option value="1200 - Realengo TP 1 SC 50Kg Polido">1200 - Realengo TP 1 SC 50Kg Polido</option>
+              <option value="8899 - Arroz Realengo Integral 10x1">8899 - Arroz Realengo Integral 10x1</option>
+              <option value="13 - Realengo Parboilizado TP 1 - 10x1">13 - Realengo Parboilizado TP 1 - 10x1</option>
+              <option value="8151 - Arroz Realengo Branco 10x1">8151 - Arroz Realengo Branco 10x1</option>
+            </select>
+          </label>
+          <label>Quantidade: <input type="number" name="quantidade[]" /></label>
+          <label>Preço Unitário: <input type="number" name="preco[]" step="0.01" /></label>
+        </div>`;
+      container.insertAdjacentHTML('beforeend', itemHTML);
+    }
+
+    window.onload = adicionarItem;
+  </script>
+</head>
+<body>
+<div class='container'>
+  <img id="logo" src="https://drive.google.com/uc?export=view&id=1e3Od-8Q_GpD7UudMzmWmPzUrKQFz5lz9" alt="Logo J&J">
+  <h2>Cadastro de Pedido</h2>
+
+  <form method="POST" action="YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL">
+    <label>Data do Pedido: <input type="date" name="data_pedido" value="2025-07-03" required /></label>
+
+    <label>Vendedor:
+      <select name="vendedor" required>
+        <option value="Thalyson">Thalyson</option>
+        <option value="Moises">Moises</option>
+        <option value="Rafael">Rafael</option>
+        <option value="Wilian">Wilian</option>
+        <option value="Flaviano">Flaviano</option>
+      </select>
+    </label>
+
+    <label>CNPJ do Cliente: <input type="text" id="cnpj" name="cnpj" required /></label>
+    <button type="button" onclick="buscarCNPJ()">Buscar Cliente</button>
+
+    <label>Razão Social: <input type="text" id="razao" name="razao_social" readonly /></label>
+    <label>Nome Fantasia: <input type="text" id="fantasia" name="nome_fantasia" readonly /></label>
+    <label>Endereço: <input type="text" id="endereco" name="endereco" readonly /></label>
+    <label>Município: <input type="text" id="municipio" name="municipio" readonly /></label>
+    <label>UF: <input type="text" id="uf" name="uf" readonly /></label>
+
+    <div id="itens"></div>
+    <button type="button" class="button" onclick="adicionarItem()">+ Adicionar Produto</button>
+
+    <label>Condição de Pagamento:
+      <select name="condicao_pagamento" required>
+        <option>AVISTA ANTECIPADO</option>
+        <option>BOLETO 7 DIAS</option>
+        <option>BOLETO 14 / 21 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 / 35 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 / 35 / 42 DIAS</option>
+        <option>BOLETO 21 / 28 / 35 DIAS</option>
+        <option>BOLETO 21 / 28 / 35 / 42 DIAS</option>
+      </select>
+    </label>
+
+    <label>Formato de Entrega:</label>
+    <label><input type="radio" name="formato_entrega" value="CIF" required /> CIF</label>
+    <label><input type="radio" name="formato_entrega" value="FOB" /> FOB</label>
+
+    <label>Observações: <textarea name="observacoes"></textarea></label>
+
+    <button type="submit" class="button">Enviar Pedido</button>
+  </form>
+</div>
+</body>
+</html>
