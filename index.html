@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastro de Pedido</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #f6f6f6;
@@ -74,7 +72,7 @@
       right: 10px;
     }
     img {
-      max-width: 120px;
+      max-width: 140px;
       display: block;
       margin: 0 auto 20px auto;
     }
@@ -88,11 +86,11 @@
 </head>
 <body>
   <form id="pedidoForm">
-    <img src="logo_jj.png" alt="Logo J&J">
+    <img src="https://drive.google.com/uc?export=view&id=1e3Od-8Q_GpD7UudMzmWmPzUrKQFz5lz9" alt="Logo J&J">
     <h2 style="text-align:center">Cadastro de Pedido</h2>
 
     <label>Data do Pedido:</label>
-    <input type="date" name="dataPedido" required>
+    <input type="date" name="dataPedido" required value="<?= new Date().toISOString().split('T')[0] ?>">
 
     <label>Vendedor:</label>
     <select name="vendedor" required>
@@ -141,7 +139,7 @@
     </select>
 
     <label>Formato de Entrega:</label>
-    <label><input type="radio" name="formatoEntrega" value="CIF"> CIF</label>
+    <label><input type="radio" name="formatoEntrega" value="CIF" required> CIF</label>
     <label><input type="radio" name="formatoEntrega" value="FOB"> FOB</label>
 
     <label>Observações:</label>
@@ -236,9 +234,10 @@
         });
       });
 
-      const resposta = await fetch("https://script.google.com/macros/s/AKfycbzvEeln2NhLY31ZL4LF5X6PJ48dzBn1B0hXBPy23vNrHeIEeyH1_hTCd_pqcdMa7ELU-g/exec", {
+      const resposta = await fetch("https://script.google.com/macros/s/AKfycbypzl_1HE0CNhhnZ9Velr1fOsvwXBdB4_hTR_w2WLgCH68mJdgTdfHzuHluB1zzAQm6RQ/exec", {
         method: "POST",
-        body: JSON.stringify(dados)
+        body: JSON.stringify(dados),
+        headers: { "Content-Type": "application/json" }
       });
 
       const resultado = await resposta.json();
@@ -249,6 +248,7 @@
         addProduto();
       } else {
         alert("Erro ao enviar pedido.");
+        console.log(resultado.erro || resultado);
       }
     });
   </script>
