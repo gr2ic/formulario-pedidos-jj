@@ -1,148 +1,120 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Pedido</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
-        .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; }
-        h2 { text-align: center; color: #222; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box; }
-        .item { margin-bottom: 15px; }
-        .button { padding: 10px 20px; background: #000; color: white; cursor: pointer; border: none; margin-top: 20px; }
-        .button:hover { background: #333; }
-        #logo { width: 100px; display: block; margin: auto; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Pedido</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label { font-weight: bold; display: block; margin-top: 15px; }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button { background: black; color: white; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    .product-group { display: flex; gap: 10px; margin-top: 10px; }
+    .product-group > div { flex: 1; }
+    img.logo { display: block; margin: 0 auto 20px; max-height: 60px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <img id="logo" src="https://drive.google.com/uc?export=view&id=1ujyK_6uZcn0ZnIJP03J266gBbSMTCKDS" alt="Logo J&J">
-        <h2>Cadastro de Pedido</h2>
+  <div class="container">
+    <img src="https://drive.google.com/uc?id=1e3Od-8Q_GpD7UudMzmWmPzUrKQFz5lz9" alt="Logo J&J" class="logo">
+    <h2>Cadastro de Pedido</h2>
 
-        <form id="pedidoForm">
-            <label>Data do Pedido:
-                <input type="date" name="data_pedido" required />
-            </label>
+    <label>Data do Pedido:</label>
+    <input type="date" name="dataPedido">
 
-            <label>Vendedor:
-                <select name="vendedor" required>
-                    <option value="">Selecione</option>
-                    <option>Thalyson</option>
-                    <option>Geilson</option>
-                </select>
-            </label>
+    <label>Vendedor:</label>
+    <select name="vendedor">
+      <option value="">Selecione</option>
+      <option>Thalyson</option>
+      <option>Moises</option>
+      <option>Rafael</option>
+      <option>Wilian</option>
+      <option>Flaviano</option>
+    </select>
 
-            <label>CNPJ do Cliente:
-                <input type="text" id="cnpj" name="cnpj" required />
-                <button type="button" onclick="buscarCNPJ()">Buscar Cliente</button>
-            </label>
+    <label>CNPJ do Cliente:</label>
+    <input type="text" name="cnpj">
+    <button type="button">Buscar Cliente</button>
 
-            <label>Razão Social:
-                <input type="text" id="razao" name="razao_social" readonly />
-            </label>
+    <label>Razão Social:</label>
+    <input type="text" name="razao">
 
-            <label>Nome Fantasia:
-                <input type="text" id="fantasia" name="nome_fantasia" readonly />
-            </label>
+    <label>Nome Fantasia:</label>
+    <input type="text" name="fantasia">
 
-            <label>Endereço:
-                <input type="text" id="endereco" name="endereco" readonly />
-            </label>
+    <label>Endereço:</label>
+    <input type="text" name="endereco">
 
-            <label>Município:
-                <input type="text" id="municipio" name="municipio" readonly />
-            </label>
+    <label>Município:</label>
+    <input type="text" name="municipio">
 
-            <label>UF:
-                <input type="text" id="uf" name="uf" readonly />
-            </label>
+    <label>UF:</label>
+    <input type="text" name="uf">
 
-            <div id="itens">
-                <div class="item">
-                    <label>Produto:
-                        <select name="produto[]">
-                            <option value="1 - Realengo TP 1 6x5 Parboilizado">1 - Realengo TP 1 6x5 Parboilizado</option>
-                            <option value="3 - Realengo TP 1 30x1 Parboilizado">3 - Realengo TP 1 30x1 Parboilizado</option>
-                            <option value="642 - Realengo 10x6 6x5">642 - Realengo 10x6 6x5</option>
-                        </select>
-                    </label>
+    <label>Produto:</label>
+    <select name="produto">
+      <option>1 - Realengo TP 1 6x5 Parboilizado</option>
+      <option>3 - Realengo TP 1 30x1 Parboilizado</option>
+      <option>642 - Realengo Polido 6x5</option>
+      <option>643 - Realengo Polido 30x1</option>
+      <option>1110 - Arroz P/ Cães 6x5</option>
+      <option>8291 - Arroz Parboilizado 25Kg TP 1</option>
+      <option>8295 - Arroz Polido TP 1 SC 25Kg</option>
+      <option>1128 - Realengo TP 1 SC 50Kg Parboilizado</option>
+      <option>1200 - Realengo TP 1 SC 50Kg Polido</option>
+      <option>8899 - Arroz Realengo Integral 10x1</option>
+      <option>13 - Realengo Parboilizado TP 1 - 10x1</option>
+      <option>8151 - Arroz Realengo Branco 10x1</option>
+    </select>
 
-                    <label>Quantidade:
-                        <input type="number" name="quantidade[]" required />
-                    </label>
-
-                    <label>Preço Unitário:
-                        <input type="number" name="preco[]" step="0.01" required />
-                    </label>
-                </div>
-            </div>
-
-            <button type="button" onclick="adicionarItem()">+ Adicionar Produto</button>
-
-            <label>Condição de Pagamento:
-                <select name="condicao_pagamento" required>
-                    <option value="AVISTA ANTECIPADO">AVISTA ANTECIPADO</option>
-                    <option value="30 DIAS">30 DIAS</option>
-                </select>
-            </label>
-
-            <label>Formato de Entrega:</label>
-            <label><input type="radio" name="formato_entrega" value="CIF" required /> CIF</label>
-            <label><input type="radio" name="formato_entrega" value="FOB" /> FOB</label>
-
-            <label>Observações:
-                <textarea name="observacoes"></textarea>
-            </label>
-
-            <button class="button" type="submit">Enviar Pedido</button>
-        </form>
+    <div class="product-group">
+      <div>
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade">
+      </div>
+      <div>
+        <label>Preço Unitário:</label>
+        <input type="number" name="preco">
+      </div>
     </div>
 
-    <script>
-        async function buscarCNPJ() {
-            const cnpj = document.getElementById("cnpj").value.replace(/\D/g, "");
-            const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-            const data = await res.json();
-            document.getElementById("razao").value = data.razao_social || "";
-            document.getElementById("fantasia").value = data.nome_fantasia || "";
-            document.getElementById("endereco").value = (data.logradouro || "") + ", " + (data.numero || "") + " - " + (data.bairro || "");
-            document.getElementById("municipio").value = data.municipio || "";
-            document.getElementById("uf").value = data.uf || "";
-        }
+    <label>Condição de Pagamento:</label>
+    <select name="condicao">
+      <option>AVISTA ANTECIPADO</option>
+      <option>BOLETO 7 DIAS</option>
+      <option>BOLETO 14 /21 DIAS</option>
+      <option>BOLETO 14 / 21 / 28 DIAS</option>
+      <option>BOLETO 14 / 21 / 28 / 35 DIAS</option>
+      <option>BOLETO 14 / 21 / 28 / 35 / 42 DIAS</option>
+      <option>BOLETO 21 / 28 / 35 DIAS</option>
+      <option>BOLETO 21 / 28 / 35 / 42 DIAS</option>
+      <option>BOLETO 21 / 28 DIAS</option>
+      <option>BOLETO 21 / 28 / 35 / 42 / 49 DIAS</option>
+      <option>BOLETO 35 DIAS</option>
+    </select>
 
-        function adicionarItem() {
-            const container = document.getElementById("itens");
-            const item = document.createElement("div");
-            item.className = "item";
-            item.innerHTML = `
-                <label>Produto:
-                    <select name="produto[]">
-                        <option value="1 - Realengo TP 1 6x5 Parboilizado">1 - Realengo TP 1 6x5 Parboilizado</option>
-                        <option value="3 - Realengo TP 1 30x1 Parboilizado">3 - Realengo TP 1 30x1 Parboilizado</option>
-                        <option value="642 - Realengo 10x6 6x5">642 - Realengo 10x6 6x5</option>
-                    </select>
-                </label>
-                <label>Quantidade:
-                    <input type="number" name="quantidade[]" required />
-                </label>
-                <label>Preço Unitário:
-                    <input type="number" name="preco[]" step="0.01" required />
-                </label>`;
-            container.appendChild(item);
-        }
+    <label>Formato de Entrega:</label>
+    <label><input type="radio" name="formato" value="CIF"> CIF</label>
+    <label><input type="radio" name="formato" value="FOB"> FOB</label>
 
-        document.getElementById("pedidoForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const res = await fetch("https://script.google.com/macros/s/AKfycbzvEeln2NhLY31ZL4LF5X6PJ48dzBn1B0hXBPy23vNrHeIEeyH1_hTCd_pqcdMa7ELU-g/exec", {
-                method: "POST",
-                body: new URLSearchParams(formData)
-            });
-            alert("Pedido enviado com sucesso!");
-            this.reset();
-        });
-    </script>
+    <label>Observações:</label>
+    <textarea name="observacoes"></textarea>
+
+    <button type="submit">Enviar Pedido</button>
+  </div>
 </body>
 </html>
