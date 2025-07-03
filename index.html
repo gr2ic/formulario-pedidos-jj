@@ -2,218 +2,191 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Pedido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Pedido - J&J</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       font-family: Arial, sans-serif;
-      background: #f6f6f6;
+      background: #f7f7f7;
+      padding: 10px;
       margin: 0;
-      padding: 0;
     }
-    form {
+    .container {
+      max-width: 600px;
+      margin: auto;
       background: white;
       padding: 20px;
-      margin: 10px;
       border-radius: 10px;
-      max-width: 100%;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
     }
     label {
       display: block;
-      margin-top: 10px;
-      font-size: 0.95em;
+      margin: 12px 0 5px;
+      font-weight: bold;
     }
-    input, select, textarea {
+    input, select, textarea, button {
       width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    .produto {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+    .produto select, .produto input {
+      flex: 1;
+    }
+    .produto button {
+      width: auto;
+      padding: 4px 8px;
+      background: #d9534f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    .add-btn {
+      background: #5cb85c;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      margin-top: -5px;
+      margin-bottom: 15px;
+    }
+    .submit-btn {
+      background: #007bff;
+      color: white;
+      border: none;
       padding: 10px;
-      margin-top: 5px;
-      font-size: 1em;
-      border: 1px solid #ccc;
+      font-size: 16px;
       border-radius: 5px;
     }
-    .produto-item {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background: #f9f9f9;
-      position: relative;
-    }
-    .add-produto {
-      margin-top: 15px;
-      background: #444;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 5px;
-      width: 100%;
-      font-size: 1em;
-    }
-    button[type="submit"] {
-      margin-top: 20px;
-      background: black;
-      color: white;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      font-size: 1.1em;
-      border-radius: 5px;
-    }
-    .remover {
-      background: red;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-    img {
-      max-width: 120px;
+    img.logo {
       display: block;
-      margin: 0 auto 20px auto;
-    }
-    @media (min-width: 600px) {
-      form {
-        max-width: 600px;
-        margin: 20px auto;
-      }
+      margin: 0 auto 10px;
+      max-height: 50px;
     }
   </style>
 </head>
 <body>
-  <form id="pedidoForm">
-    <img src="logo_jj.png" alt="Logo J&J">
-    <h2 style="text-align:center">Cadastro de Pedido</h2>
+  <div class="container">
+    <img src="https://drive.google.com/uc?id=1e3Od-8Q_GpD7UudMzmWmPzUrKQFz5lz9" alt="Logo J&J" class="logo">
+    <h2>Cadastro de Pedido</h2>
+    <form id="pedidoForm">
+      <label for="dataPedido">Data do Pedido:</label>
+      <input type="date" name="dataPedido" required>
 
-    <label>Data do Pedido:</label>
-    <input type="date" name="dataPedido" required>
+      <label for="vendedor">Vendedor:</label>
+      <select name="vendedor" required>
+        <option value="">Selecione</option>
+        <option>Thalyson</option>
+        <option>Moises</option>
+        <option>Rafael</option>
+        <option>Wilian</option>
+        <option>Flaviano</option>
+      </select>
 
-    <label>Vendedor:</label>
-    <select name="vendedor" required>
-      <option value="">Selecione</option>
-      <option>Thalyson</option>
-      <option>Moises</option>
-      <option>Rafael</option>
-      <option>Wilian</option>
-      <option>Flaviano</option>
-    </select>
+      <label for="cnpj">CNPJ do Cliente:</label>
+      <input type="text" name="cnpj" required>
 
-    <label>CNPJ do Cliente:</label>
-    <input type="text" name="cnpj" required>
+      <label for="razaoSocial">Razão Social:</label>
+      <input type="text" name="razaoSocial" required>
 
-    <label>Razão Social:</label>
-    <input type="text" name="razaoSocial">
+      <label for="nomeFantasia">Nome Fantasia:</label>
+      <input type="text" name="nomeFantasia">
 
-    <label>Nome Fantasia:</label>
-    <input type="text" name="nomeFantasia">
+      <label for="endereco">Endereço:</label>
+      <input type="text" name="endereco">
 
-    <label>Endereço:</label>
-    <input type="text" name="endereco">
+      <label for="municipio">Município:</label>
+      <input type="text" name="municipio">
 
-    <label>Município:</label>
-    <input type="text" name="municipio">
+      <label for="uf">UF:</label>
+      <input type="text" name="uf">
 
-    <label>UF:</label>
-    <input type="text" name="uf">
+      <label>Produtos:</label>
+      <div id="produtosContainer">
+        <div class="produto">
+          <select name="produto" required>
+            <option value="">Selecione</option>
+            <option>1 - Realengo TP 1 6x5 Parboilizado</option>
+            <option>3 - Realengo TP 1 30x1 Parboilizado</option>
+            <option>642 - Realengo Polido 6x5</option>
+            <option>643 - Realengo Polido 30x1</option>
+            <option>1110 - Arroz P/ Cães 6x5</option>
+            <option>8291 - Arroz Parboilizado 25Kg TP 1</option>
+            <option>8295 - Arroz Polido TP 1 SC 25Kg</option>
+            <option>1128 - Realengo TP 1 SC 50Kg Parboilizado</option>
+            <option>1200 - Realengo TP 1 SC 50Kg Polido</option>
+            <option>8899 - Arroz Realengo Integral 10x1</option>
+            <option>13 - Realengo Parboilizado TP 1 - 10x1</option>
+            <option>8151 - Arroz Realengo Branco 10x1</option>
+          </select>
+          <input type="number" placeholder="Quantidade" required>
+          <input type="number" placeholder="Preço Unitário" required>
+        </div>
+      </div>
+      <button type="button" class="add-btn" onclick="adicionarProduto()">+ Adicionar Produto</button>
 
-    <div id="produtos"></div>
-    <button type="button" class="add-produto" onclick="addProduto()">+ Adicionar Produto</button>
+      <label for="condicaoPagamento">Condição de Pagamento:</label>
+      <select name="condicaoPagamento" required>
+        <option>AVISTA ANTECIPADO</option>
+        <option>BOLETO 7 DIAS</option>
+        <option>BOLETO 14 /21 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 / 35 DIAS</option>
+        <option>BOLETO 14 / 21 / 28 / 35 / 42 DIAS</option>
+        <option>BOLETO 21 / 28 / 35 DIAS</option>
+        <option>BOLETO 21 / 28 / 35 / 42 DIAS</option>
+        <option>BOLETO 21 / 28 DIAS</option>
+        <option>BOLETO 21 / 28 / 35 / 42 / 49 DIAS</option>
+        <option>BOLETO 35 DIAS</option>
+      </select>
 
-    <label>Condição de Pagamento:</label>
-    <select name="condicaoPagamento">
-      <option>AVISTA ANTECIPADO</option>
-      <option>BOLETO 7 DIAS</option>
-      <option>BOLETO 14 /21 DIAS</option>
-      <option>BOLETO 14 / 21 / 28 DIAS</option>
-      <option>BOLETO 14 / 21 / 28 / 35 DIAS</option>
-      <option>BOLETO 14 / 21 / 28 / 35 / 42 DIAS</option>
-      <option>BOLETO 21 / 28 / 35 DIAS</option>
-      <option>BOLETO 21 / 28 / 35 / 42 DIAS</option>
-      <option>BOLETO 21 / 28 DIAS</option>
-      <option>BOLETO 21 / 28 / 35 / 42 / 49 DIAS</option>
-      <option>BOLETO 35 DIAS</option>
-    </select>
+      <label for="formatoEntrega">Formato de Entrega:</label>
+      <label><input type="radio" name="formatoEntrega" value="CIF" required> CIF</label>
+      <label><input type="radio" name="formatoEntrega" value="FOB"> FOB</label>
 
-    <label>Formato de Entrega:</label>
-    <label><input type="radio" name="formatoEntrega" value="CIF"> CIF</label>
-    <label><input type="radio" name="formatoEntrega" value="FOB"> FOB</label>
+      <label for="observacoes">Observações:</label>
+      <textarea name="observacoes" rows="3"></textarea>
 
-    <label>Observações:</label>
-    <textarea name="observacoes"></textarea>
-
-    <button type="submit">Enviar Pedido</button>
-  </form>
+      <button type="submit" class="submit-btn">Enviar Pedido</button>
+    </form>
+  </div>
 
   <script>
-    const produtos = [
-      "1 - Realengo TP 1 6x5 Parboilizado",
-      "3 - Realengo TP 1 30x1 Parboilizado",
-      "642 - Realengo Polido 6x5",
-      "643 - Realengo Polido 30x1",
-      "1110 - Arroz P/ Cães 6x5",
-      "8291 - Arroz Parboilizado 25Kg TP 1",
-      "8295 - Arroz Polido TP 1 SC 25Kg",
-      "1128 - Realengo TP 1 SC 50Kg Parboilizado",
-      "1200 - Realengo TP 1 SC 50Kg Polido",
-      "8899 - Arroz Realengo Integral 10x1",
-      "13 - Realengo Parboilizado TP 1 - 10x1",
-      "8151 - Arroz Realengo Branco 10x1"
-    ];
-
-    function addProduto() {
-      const div = document.createElement("div");
-      div.className = "produto-item";
-
-      const index = document.querySelectorAll(".produto-item").length;
-      const podeExcluir = index > 0;
-
+    function adicionarProduto() {
+      const container = document.getElementById('produtosContainer');
+      const div = document.createElement('div');
+      div.className = 'produto';
       div.innerHTML = `
-        <label>Produto:</label>
-        <select name="produto">
-          ${produtos.map(p => `<option value="${p}">${p}</option>`).join('')}
+        <select name="produto" required>
+          ${document.querySelector('[name="produto"]').innerHTML}
         </select>
-        <label>Quantidade:</label>
-        <input type="number" name="quantidade" required>
-        <label>Preço Unitário:</label>
-        <input type="number" name="precoUnitario" required>
-        ${podeExcluir ? '<button type="button" class="remover" onclick="this.parentElement.remove()">🗑️ Remover</button>' : ''}
+        <input type="number" placeholder="Quantidade" required>
+        <input type="number" placeholder="Preço Unitário" required>
+        <button type="button" onclick="this.parentElement.remove()">🗑️</button>
       `;
-      document.getElementById("produtos").appendChild(div);
+      container.appendChild(div);
     }
 
-    addProduto();
-
-    document.querySelector("input[name='cnpj']").addEventListener("blur", async function () {
-      const cnpj = this.value.replace(/\D/g, "");
-      if (cnpj.length !== 14) return;
-
-      try {
-        const resposta = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
-        if (!resposta.ok) throw new Error("Erro na consulta do CNPJ");
-
-        const dados = await resposta.json();
-
-        document.querySelector("input[name='razaoSocial']").value = dados.razao_social || "";
-        document.querySelector("input[name='nomeFantasia']").value = dados.nome_fantasia || "";
-        document.querySelector("input[name='endereco']").value = `${dados.descricao_tipo_de_logradouro || ""} ${dados.logradouro || ""}, ${dados.numero || ""}`.trim();
-        document.querySelector("input[name='municipio']").value = dados.municipio || "";
-        document.querySelector("input[name='uf']").value = dados.uf || "";
-      } catch (erro) {
-        alert("Não foi possível consultar o CNPJ automaticamente.");
-      }
-    });
-
-    document.getElementById("pedidoForm").addEventListener("submit", async function(e) {
+    document.getElementById('pedidoForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const form = e.target;
-      const dados = {
+      const produtos = [...form.querySelectorAll('.produto')].map(p => ({
+        nome: p.children[0].value,
+        quantidade: p.children[1].value,
+        precoUnitario: p.children[2].value
+      }));
+
+      const payload = {
         dataPedido: form.dataPedido.value,
         vendedor: form.vendedor.value,
         cnpj: form.cnpj.value,
@@ -225,32 +198,31 @@
         condicaoPagamento: form.condicaoPagamento.value,
         formatoEntrega: form.formatoEntrega.value,
         observacoes: form.observacoes.value,
-        produtos: []
+        produtos
       };
 
-      document.querySelectorAll(".produto-item").forEach(div => {
-        dados.produtos.push({
-          nome: div.querySelector("select[name='produto']").value,
-          quantidade: div.querySelector("input[name='quantidade']").value,
-          precoUnitario: div.querySelector("input[name='precoUnitario']").value
+      try {
+        const res = await fetch('https://script.google.com/macros/s/AKfycbzvEeln2NhLY31ZL4LF5X6PJ48dzBn1B0hXBPy23vNrHeIEeyH1_hTCd_pqcdMa7ELU-g/exec', {
+          method: 'POST',
+          body: JSON.stringify(payload)
         });
-      });
 
-      const resposta = await fetch("https://script.google.com/macros/s/AKfycbzvEeln2NhLY31ZL4LF5X6PJ48dzBn1B0hXBPy23vNrHeIEeyH1_hTCd_pqcdMa7ELU-g/exec", {
-        method: "POST",
-        body: JSON.stringify(dados)
-      });
-
-      const resultado = await resposta.json();
-      if (resultado.success) {
-        alert("Pedido enviado com sucesso!");
-        form.reset();
-        document.getElementById("produtos").innerHTML = "";
-        addProduto();
-      } else {
-        alert("Erro ao enviar pedido.");
+        const result = await res.json();
+        if (result.success) {
+          alert('Pedido enviado com sucesso!');
+          form.reset();
+          document.getElementById('produtosContainer').innerHTML = '';
+          adicionarProduto();
+        } else {
+          alert('Erro ao enviar pedido.');
+        }
+      } catch (err) {
+        alert('Erro de conexão ao enviar o pedido.');
+        console.error(err);
       }
     });
+
+    window.addEventListener('DOMContentLoaded', () => adicionarProduto());
   </script>
 </body>
 </html>
