@@ -2,24 +2,27 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cadastro de Pedido - J&J</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Pedido</title>
   <style>
     * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #f6f6f6;
-      margin: 0;
-      padding: 10px;
+      margin: 0; padding: 0;
     }
     form {
       background: white;
       padding: 20px;
+      margin: 10px;
       border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
+      max-width: 100%;
     }
-    label { display: block; margin-top: 10px; font-size: 0.95em; }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.95em;
+    }
     input, select, textarea {
       width: 100%;
       padding: 10px;
@@ -72,15 +75,21 @@
       display: block;
       margin: 0 auto 20px auto;
     }
+    @media (min-width: 600px) {
+      form {
+        max-width: 600px;
+        margin: 20px auto;
+      }
+    }
   </style>
 </head>
 <body>
   <form id="pedidoForm">
-    <img src="logo_jj.png" alt="Logo J&J" />
+    <img src="logo-jj.jpg" alt="Logo J&J">
     <h2 style="text-align:center">Cadastro de Pedido</h2>
 
     <label>Data do Pedido:</label>
-    <input type="date" name="dataPedido" required value="<?= new Date().toISOString().split('T')[0] ?>">
+    <input type="date" name="dataPedido" required>
 
     <label>Vendedor:</label>
     <select name="vendedor" required>
@@ -129,7 +138,7 @@
     </select>
 
     <label>Formato de Entrega:</label>
-    <label><input type="radio" name="formatoEntrega" value="CIF" required> CIF</label>
+    <label><input type="radio" name="formatoEntrega" value="CIF"> CIF</label>
     <label><input type="radio" name="formatoEntrega" value="FOB"> FOB</label>
 
     <label>Observações:</label>
@@ -139,7 +148,7 @@
   </form>
 
   <script>
-    const produtosLista = [
+    const produtos = [
       "1 - Realengo TP 1 6x5 Parboilizado",
       "3 - Realengo TP 1 30x1 Parboilizado",
       "642 - Realengo Polido 6x5",
@@ -157,13 +166,14 @@
     function addProduto() {
       const div = document.createElement("div");
       div.className = "produto-item";
-
       const index = document.querySelectorAll(".produto-item").length;
       const podeExcluir = index > 0;
 
       div.innerHTML = `
         <label>Produto:</label>
-        <select name="produto">${produtosLista.map(p => `<option value="${p}">${p}</option>`).join('')}</select>
+        <select name="produto">
+          ${produtos.map(p => `<option value="${p}">${p}</option>`).join('')}
+        </select>
         <label>Quantidade:</label>
         <input type="number" name="quantidade" required>
         <label>Preço Unitário:</label>
@@ -189,7 +199,7 @@
         document.querySelector("input[name='municipio']").value = dados.municipio || "";
         document.querySelector("input[name='uf']").value = dados.uf || "";
       } catch (erro) {
-        alert("Erro ao consultar CNPJ.");
+        alert("Não foi possível consultar o CNPJ automaticamente.");
       }
     });
 
@@ -223,11 +233,13 @@
       try {
         const resposta = await fetch("https://script.google.com/macros/s/AKfycbypzl_1HE0CNhhnZ9Velr1fOsvwXBdB4_hTR_w2WLgCH68mJdgTdfHzuHluB1zzAQm6RQ/exec", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(dados)
         });
 
-        const resultado = await resposta.json();
+        const texto = await resposta.text();
+        console.log("Resposta do servidor:", texto);
+
+        const resultado = JSON.parse(texto);
         if (resultado.success) {
           alert("Pedido enviado com sucesso!");
           form.reset();
@@ -235,11 +247,10 @@
           addProduto();
         } else {
           alert("Erro ao enviar pedido.");
-          console.log(resultado);
         }
       } catch (erro) {
-        alert("Erro ao enviar pedido.");
-        console.error(erro);
+        console.error("Erro na submissão:", erro);
+        alert("Erro ao processar o envio do pedido.");
       }
     });
   </script>
